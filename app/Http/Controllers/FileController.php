@@ -158,14 +158,23 @@ class FileController extends Controller
             $queryBuilder->where('starred', true);
         }
     }
+    /**
+     * Display a listing of the recent resource.
+     */
+    public function recent(Request $request): \Illuminate\Http\JsonResponse|\Illuminate\View\View
+    {
+
+        return view("file.recent", compact("files"));
+    }
 
     /**
      * Display a listing of the starred resource.
      */
     public function starred(Request $request): \Illuminate\Http\JsonResponse|\Illuminate\View\View
     {
-        // Call search with starred = true
-        return $this->search($request);
+
+        $files =  $this->search($request);
+        return view("file.starred", compact("files"));
     }
     /**
      * Format file size in bytes, kilobytes, megabytes, etc.

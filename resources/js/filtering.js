@@ -51,14 +51,15 @@ const setupMenu = (buttonId, menuRole) => {
 $(document).ready(() => {
     // Cache jQuery selectors
     const $searchInput = $("#search");
-    const $menuButton = $("#menu-button");
+    const $typeMenuButton = $("#type-menu-button");
 
     // Fetch initial results
     fetchResults("");
 
     // Bind search input with debounce
     const debouncedFetchResults = debounce(
-        (query) => fetchResults(query, $menuButton.attr("data-filter-type")),
+        (query) =>
+            fetchResults(query, $typeMenuButton.attr("data-filter-type")),
         300
     );
     $searchInput.on("keyup", () => debouncedFetchResults($searchInput.val()));
@@ -67,12 +68,13 @@ $(document).ready(() => {
     $(document).on("click", ".filter-button", function () {
         const filterType = $(this).attr("name");
         const filterText = $(this).text();
-        $menuButton.text(`${filterText} \u23F7`);
-        $menuButton.attr("data-filter-type", filterType);
+        $typeMenuButton.text(`${filterText} \u23F7`);
+        $typeMenuButton.attr("data-filter-type", filterType);
         fetchResults($searchInput.val(), filterType);
         $(this).closest('[role="menu"]').addClass("hidden");
+        $typeMenuButton.attr("aria-expanded", "false"); // Close the menu
     });
 
-    // Initialize menu
-    setupMenu("menu-button", "menu");
+    // Initialize menus
+    setupMenu("type-menu-button", "menu");
 });
